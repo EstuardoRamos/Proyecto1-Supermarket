@@ -6,6 +6,7 @@
 package project_supermarket.Vistas.administrador;
 
 import java.awt.BorderLayout;
+import project_supermarket.Vistas.Login;
 import project_supermarket.Vistas.bodega.RegistrarProducto;
 import project_supermarket.Vistas.entidades.Empleado;
 
@@ -18,13 +19,16 @@ public class AdministradorFrame extends javax.swing.JFrame {
     /**
      * Creates new form AdministradorFrame
      */
+    Empleado empleado;
     public AdministradorFrame() {
         initComponents();
+        setLocationRelativeTo(null);
     }
     
     public AdministradorFrame(Empleado empleado) {
+        this.empleado=empleado;
         initComponents();
-        System.out.println("hola");
+        setLocationRelativeTo(null);
         
         RegistrarEmpleado rp = new RegistrarEmpleado(empleado);
         rp.setSize(600,405);
@@ -48,6 +52,7 @@ public class AdministradorFrame extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,11 +69,29 @@ public class AdministradorFrame extends javax.swing.JFrame {
             .addGap(0, 405, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("File");
+        jMenu1.setText("Registrar empleado");
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Generar Reportes");
+        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu2MouseClicked(evt);
+            }
+        });
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Cerrar sesion");
+        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu3MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -91,6 +114,36 @@ public class AdministradorFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
+        // TODO add your handling code here:
+        //-----------------
+        ReportesFrame rp = new ReportesFrame();
+        rp.setSize(600,405);
+        rp.setLocation(0,0);
+        content.removeAll();
+        content.add(rp, BorderLayout.CENTER);
+        content.revalidate();
+        content.repaint();
+    }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        // TODO add your handling code here:
+        RegistrarEmpleado rp = new RegistrarEmpleado(empleado);
+        rp.setSize(600,405);
+        rp.setLocation(0,0);
+        content.removeAll();
+        content.add(rp, BorderLayout.CENTER);
+        content.revalidate();
+        content.repaint();
+    }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
+        // TODO add your handling code here:
+        Login login = new Login();
+        login.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jMenu3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -131,6 +184,7 @@ public class AdministradorFrame extends javax.swing.JFrame {
     private javax.swing.JPanel content;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     // End of variables declaration//GEN-END:variables
 }

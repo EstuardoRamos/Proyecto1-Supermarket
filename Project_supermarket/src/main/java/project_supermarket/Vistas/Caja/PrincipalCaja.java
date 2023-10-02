@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -21,6 +22,7 @@ import project_supermarket.controlers.ProductoDatos;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import project_supermarket.Vistas.Login;
 import project_supermarket.Vistas.entidades.Estanteria;
 import project_supermarket.Vistas.entidades.Venta;
 import project_supermarket.controlers.EstanteriaDatos;
@@ -52,6 +54,7 @@ public class PrincipalCaja extends javax.swing.JFrame {
     float total = (float) 0.0;
 
     int cantProducto;
+    int id_venta;
 
     public PrincipalCaja() {
         initComponents();
@@ -59,9 +62,13 @@ public class PrincipalCaja extends javax.swing.JFrame {
 
     public PrincipalCaja(Empleado empleado) {
         this.empleado = empleado;
+        
         initComponents();
-        //ArrayList<Producto> productos;
-        //productos = pd.listarProductosDeOtraTienda(empleado.getSucursal());
+        setLocationRelativeTo(null);
+        agregarClienteBtn.setVisible(false);
+        actualizarbtn.setVisible(false);
+        nombreCajero.setText(empleado.getNombre());
+        nitFactura.setText("C/F");
         productos = pd.listarProductosDeEstanteria(empleado.getSucursal());
         actualizarTablaProductos();
 
@@ -71,20 +78,17 @@ public class PrincipalCaja extends javax.swing.JFrame {
                 if (!e.getValueIsAdjusting()) {
                     // Obtiene la fila seleccionada
                     int filaSeleccionada = jTable1.getSelectedRow();
-
-                    // Verifica que haya una fila seleccionada
                     if (filaSeleccionada != -1) {
                         // Obtiene el producto seleccionado
                         Producto productoSeleccionado = obtenerProductoSeleccionado();
 
-                        // Imprime el producto en la consola
                         if (productoSeleccionado != null) {
+                            
                             c_productoSelect.setText(productoSeleccionado.getCodigo_producto());
                             nombrePSelect.setText(productoSeleccionado.getNombre());
                             cantProducto = 1;
                             cantP.setText(String.valueOf(cantProducto));
                             productoSelect = productoSeleccionado;
-                            System.out.println("Producto seleccionado: " + productoSeleccionado.getNombre());
                         }
                     }
                 }
@@ -95,10 +99,10 @@ public class PrincipalCaja extends javax.swing.JFrame {
 
     public void actualizarTablaProductos() {
         DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("Id_producto");
+        modelo.addColumn("Codigo de producto");
         modelo.addColumn("Nombre");
         modelo.addColumn("Descripcion");
-        modelo.addColumn("Codigo");
+        modelo.addColumn("Sucursal");
         modelo.addColumn("Precio");
         modelo.addColumn("Cantidad");
 
@@ -158,8 +162,8 @@ public class PrincipalCaja extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         telefonoCliente = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
+        agregarClienteBtn = new javax.swing.JButton();
+        actualizarbtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         codigoProductoTxr = new javax.swing.JLabel();
@@ -188,13 +192,14 @@ public class PrincipalCaja extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         noFactura = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        nombreCajero = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         noCajaTxt = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        clienteFactura = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        nitFactura = new javax.swing.JTextField();
+        jButton8 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -247,14 +252,14 @@ public class PrincipalCaja extends javax.swing.JFrame {
             }
         });
 
-        jButton8.setText("Agregar");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        agregarClienteBtn.setText("Agregar");
+        agregarClienteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                agregarClienteBtnActionPerformed(evt);
             }
         });
 
-        jButton9.setText("Actualizar");
+        actualizarbtn.setText("Actualizar");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -283,9 +288,9 @@ public class PrincipalCaja extends javax.swing.JFrame {
                                     .addComponent(jButton2)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(183, 183, 183)
-                        .addComponent(jButton8)
+                        .addComponent(agregarClienteBtn)
                         .addGap(129, 129, 129)
-                        .addComponent(jButton9)))
+                        .addComponent(actualizarbtn)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -307,8 +312,8 @@ public class PrincipalCaja extends javax.swing.JFrame {
                     .addComponent(telefonoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton8)
-                    .addComponent(jButton9))
+                    .addComponent(agregarClienteBtn)
+                    .addComponent(actualizarbtn))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -554,7 +559,12 @@ public class PrincipalCaja extends javax.swing.JFrame {
 
         jLabel14.setText("Nit:");
 
-        jTextField3.setText("jTextField3");
+        jButton8.setText("Cerrar sesion");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -569,25 +579,30 @@ public class PrincipalCaja extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addGap(40, 40, 40)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(46, 46, 46)
-                                .addComponent(jLabel14)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField3))
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel12)
-                                .addGap(40, 40, 40)
-                                .addComponent(noCajaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel9Layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addGap(44, 44, 44)
-                                .addComponent(noFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(noFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jLabel11)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(nombreCajero, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel12))
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jLabel13)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(clienteFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel14)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(nitFactura)
+                                    .addComponent(noCajaTxt)))))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(107, 107, 107)
+                        .addComponent(jButton8)))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
@@ -600,18 +615,20 @@ public class PrincipalCaja extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nombreCajero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12)
                     .addComponent(noCajaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(clienteFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nitFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(jButton8)
+                .addGap(26, 26, 26))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -656,17 +673,22 @@ public class PrincipalCaja extends javax.swing.JFrame {
 
         ListaProductos lista = new ListaProductos();
         if (productoSelect.getCantidad() >= cantProducto) {
+            id_venta = generarIDVenta();
+            noFactura.setText(String.valueOf(id_venta));
             lista.setCantidad(cantProducto);
             lista.setId_producto(productoSelect.getCodigo_producto());
             //lista.setId_venta(id_venta);
             lista.setPrecio_u(productoSelect.getPrecio());
             lista.setTotal_prod(productoSelect.getPrecio() * cantProducto);
             total += lista.getTotal_prod();
+            total = Math.round(total * 100.0f) / 100.0f; 
             listaProductosVenta.add(lista);
             actualizarTablaProductosVenta();
             limpiarProductoSelect();
 
-        }//mostrar ventana que no se uede agregar
+        }else{
+            JOptionPane.showMessageDialog(null, "ERROR: no hay los suficientes productos " );
+        }
 
 
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -710,9 +732,27 @@ public class PrincipalCaja extends javax.swing.JFrame {
         comprar();
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void agregarClienteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarClienteBtnActionPerformed
+        // TODO add your handling code here:
+        Cliente clienteNuevo= new Cliente();
+        clienteNuevo.setNit(nitCliente.getText());
+        clienteNuevo.setNombre(nombreCliente.getText());
+        clienteNuevo.setTelefono(telefonoCliente.getText());
+        clienteNuevo.setDinero_gastado((float) 0.00);
+        clienteNuevo.setDinero_membresia((float) 0.00);
+        clienteD.insertarCliente(clienteNuevo);
+        cliente=clienteNuevo;
+        clienteFactura.setText(cliente.getNombre());
+        nitFactura.setText(cliente.getNit());
+        
+        
+    }//GEN-LAST:event_agregarClienteBtnActionPerformed
+
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        
+        Login login = new Login();
+        login.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
@@ -783,6 +823,11 @@ public class PrincipalCaja extends javax.swing.JFrame {
         if (cliente != null) {
             nombreCliente.setText(cliente.getNombre());
             telefonoCliente.setText(cliente.getTelefono());
+            clienteFactura.setText(cliente.getNombre());
+            nitFactura.setText(cliente.getNit());
+        }else{
+            JOptionPane.showMessageDialog(null, "Cliente no encontrado, llene lo demas campos " );
+            agregarClienteBtn.setVisible(true);
         }
 
     }
@@ -794,34 +839,49 @@ public class PrincipalCaja extends javax.swing.JFrame {
     }
 
     public static int generarIDVenta() {
-        // Crear un generador de números aleatorios
         Random rand = new Random();
-
-        // Generar un número aleatorio en el rango de 10,000 a 99,999
         int numeroAleatorio = rand.nextInt(90000) + 10000;
-
-        // Formatear el número para asegurarse de que tenga 5 dígitos
         String idVenta = String.format("%05d", numeroAleatorio);
 
         return numeroAleatorio;
     }
 
     public void comprar() {
-        int id_venta = generarIDVenta();
+        
         ListaProductosDatos listaDatos = new ListaProductosDatos();
         VentaDatos vd= new VentaDatos();
         EstanteriaDatos pd = new EstanteriaDatos();
-        if (nitCliente.getText().equals(ABORT) || cliente.getNit() == null) {
-            cliente.setNit("C/F");
+        if (nitCliente.getText().equals("") || cliente == null  || cliente.getNit() == null) {
+            Cliente cf= new Cliente();
+            cf.setNit("C/F");
+            cf.setNombre("");
+            
+            cliente= cf; //Tengo un erro aqui, null exception
         }
 
         if (total > 0) {
+            
+            int respuesta = JOptionPane.showOptionDialog(null,
+                "¿Está seguro que quiere hacer la compra?",
+                "Confirmación de Compra",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,  // icono personalizado (puedes poner null para el predeterminado)
+                new String[] {"Sí", "No"},  // botones personalizados
+                "Sí");  // opción predeterminada
+        
+        if (respuesta == JOptionPane.YES_OPTION) {
+            // El usuario hizo clic en "Sí"
+            System.out.println("Compra confirmada.");
             long milis = System.currentTimeMillis();
             Date date = new Date(milis);
             //LocalDate fecha= LocalDate.now();
             //LocalDate fechaS=fecha;
             Venta venta = new Venta(id_venta, date, cliente.getNit(), empleado.getId_empleado(), empleado.getSucursal(), total, total);
             vd.insertarVenta(venta);
+            cliente.setDinero_gastado(cliente.getDinero_gastado()+total);
+            cliente.setDinero_membresia(cliente.getDinero_membresia()+total);
+            clienteD.actualizarCliente(cliente);
             System.out.println(venta.toString());
             for (ListaProductos listaProductos : listaProductosVenta) {
                 listaProductos.setId_venta(String.valueOf(id_venta));
@@ -834,7 +894,19 @@ public class PrincipalCaja extends javax.swing.JFrame {
 
                 //aumentar puntos cliente o desconta puntos clientes
                 //crear metodo para sumar puntos
+                PrincipalCaja pc= new PrincipalCaja(empleado);
+                pc.setVisible(true);
+                dispose();
+                
             }
+        } else {
+            // El usuario hizo clic en "No" o cerró el cuadro de diálogo
+            System.out.println("Compra cancelada.");
+            JOptionPane.showMessageDialog(null, "Compra cancelada " );
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "Error no hay nada para comprar " );
+            
         }
 
     }
@@ -842,8 +914,11 @@ public class PrincipalCaja extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField TotalVenta;
+    private javax.swing.JButton actualizarbtn;
+    private javax.swing.JButton agregarClienteBtn;
     private javax.swing.JTextField c_productoSelect;
     private javax.swing.JTextField cantP;
+    private javax.swing.JTextField clienteFactura;
     private javax.swing.JTextField codigoBuscar;
     private javax.swing.JLabel codigoProductoTxr;
     private javax.swing.JButton jButton1;
@@ -854,7 +929,6 @@ public class PrincipalCaja extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -879,13 +953,12 @@ public class PrincipalCaja extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JPanel mipanel;
     private javax.swing.JTextField nitCliente;
+    private javax.swing.JTextField nitFactura;
     private javax.swing.JTextField noCajaTxt;
     private javax.swing.JTextField noFactura;
+    private javax.swing.JTextField nombreCajero;
     private javax.swing.JTextField nombreCliente;
     private javax.swing.JTextField nombrePSelect;
     private javax.swing.JTable tablaFactura;

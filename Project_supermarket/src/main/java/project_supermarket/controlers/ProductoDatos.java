@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package project_supermarket.controlers;
 
 import java.sql.PreparedStatement;
@@ -15,12 +14,11 @@ import project_supermarket.Vistas.entidades.Producto;
 import project_supermarket.conection.Conexion;
 
 /**
- * 
+ *
  * @author Estuardo Ramos
  */
 public class ProductoDatos {
-    
-    
+
     public Producto listarProductosPorId(int id_producto) {
         Producto producto = null;
         PreparedStatement pr = null;
@@ -52,8 +50,8 @@ public class ProductoDatos {
         }
         return producto;
     }
-    
-     public boolean eliminarProducto(Producto producto) {
+
+    public boolean eliminarProducto(Producto producto) {
         boolean resultado = true;
         PreparedStatement pr = null;
         String query = "DELETE FROM ControlEmpresa.Producto WHERE id_producto = ?";
@@ -76,6 +74,7 @@ public class ProductoDatos {
 
     /**
      * Actualiza la informacion del producto de una base de datos
+     *
      * @param producto El producto que se actualizará
      * @return Un booleano que indica si la operacion fue exitosa
      */
@@ -107,6 +106,7 @@ public class ProductoDatos {
 
     /**
      * Inserta un producto en la base de datos
+     *
      * @param producto El producto que se insertará en la base de datos
      * @return Un booleano que indica si la operacion fue exitosa
      */
@@ -121,7 +121,7 @@ public class ProductoDatos {
             pr.setInt(3, producto.getCantidad());
             pr.setDouble(4, producto.getPrecio());
             //pr.setInt(5, producto.getCantidad());
-           // pr.setInt(6, producto.getId_tienda());
+            // pr.setInt(6, producto.getId_tienda());
             pr.executeUpdate();
             JOptionPane.showMessageDialog(null, "Producto registrado correctamente");
         } catch (SQLException e) {
@@ -139,6 +139,7 @@ public class ProductoDatos {
 
     /**
      * Lista a los productos por codigo y el id de la tienda
+     *
      * @param codigo El codigo del producto
      * @param id_tienda El id de la tienda
      * @return La informacion del producto
@@ -177,7 +178,9 @@ public class ProductoDatos {
     }
 
     /**
-     * Lista a los productos que se encuentran en una tienda diferente a la indicada
+     * Lista a los productos que se encuentran en una tienda diferente a la
+     * indicada
+     *
      * @param id_tienda El identificador de la tienda actual
      * @return La lista de productos
      */
@@ -207,7 +210,7 @@ public class ProductoDatos {
                 productos.add(nuevo);
             }
         } catch (SQLException e) {
-            System.out.println("Error "+e.getMessage());
+            System.out.println("Error " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al hacer busqueda en base de datos: " + e.getMessage());
         } finally {
             try {
@@ -219,7 +222,6 @@ public class ProductoDatos {
         }
         return productos;
     }
-   
 
     /**
      * Actualiza las existencias de un producto en la base de datos
@@ -250,12 +252,48 @@ public class ProductoDatos {
         return resultado;
     }
 
-    /**
-     * Lista todos los productos que se encuentran en una tienda
-     *
-     * @param id_tienda El id de la tienda actual
-     * @return La lista de productos de la tienda
-     */
-    
+    public ArrayList<Producto> listarTopProductosVendidos() {
+        System.out.println("entrando");
+        ArrayList<Producto> productos = new ArrayList<>();
+        PreparedStatement pr = null;
+        ResultSet rs = null;
+        String query = "SELECT\n"
+                + "    P.nombre AS nombre_producto,\n"
+                + "    SUM(LP.cantidad) AS cantidad_vendida\n"
+                + "FROM\n"
+                + "    control_ventas.lista_de_priductos AS LP\n"
+                + "INNER JOIN\n"
+                + "    control_inventario.producto AS P ON LP.id_producto = P.id_producto\n"
+                + "GROUP BY\n"
+                + "    P.nombre\n"
+                + "ORDER BY\n"
+                + "    cantidad_vendida DESC\n"
+                + "LIMIT\n"
+                + "    10;";
+        try {
+            pr = Conexion.connection.prepareStatement(query);
+            //pr.setInt(1, id_tienda);
+            rs = pr.executeQuery();
+            while (rs.next()) {
+                Producto productoTop = new Producto();
+                productoTop.setNombre(rs.getString(1));
+                productoTop.setCantidad(rs.getInt(2));
+                
+                //nuevo.setNombreTienda(rs.getString(7));
+                productos.add(productoTop);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al hacer busqueda en base de datos: " + e.getMessage());
+        } finally {
+            try {
+                pr.close();
+                rs.close();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Error al cerrar conexiones: " + e.getMessage());
+            }
+        }
+        return productos;
+    }
 
 }

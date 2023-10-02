@@ -5,6 +5,17 @@
  */
 package project_supermarket.Vistas.administrador;
 
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import project_supermarket.Vistas.entidades.Cliente;
+import project_supermarket.Vistas.entidades.Estanteria;
+import project_supermarket.Vistas.entidades.Producto;
+import project_supermarket.Vistas.entidades.Sucursal;
+import project_supermarket.Vistas.entidades.Venta;
+import project_supermarket.controlers.ClienteDatos;
+import project_supermarket.controlers.ProductoDatos;
+import project_supermarket.controlers.VentaDatos;
+
 /**
  *
  * @author Estuardo Ramos
@@ -14,6 +25,7 @@ public class ReportesFrame extends javax.swing.JPanel {
     /**
      * Creates new form ReportesFrame
      */
+    VentaDatos vd= new VentaDatos();
     public ReportesFrame() {
         initComponents();
     }
@@ -28,41 +40,46 @@ public class ReportesFrame extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        topVentasBtn = new javax.swing.JButton();
+        topSucursalesBtn = new javax.swing.JButton();
+        topProdBtn = new javax.swing.JButton();
+        topClientesBtn = new javax.swing.JButton();
+        topDescuentos = new javax.swing.JButton();
 
         jLabel1.setText("Reportes");
 
-        jButton1.setText("Top 10 ventas mas grandes");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        topVentasBtn.setText("Top 10 ventas mas grandes");
+        topVentasBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                topVentasBtnActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Top de sucursales con dinero ingresado");
-
-        jButton3.setText("Top 10 productos mas vendidos");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        topSucursalesBtn.setText("Top de sucursales con dinero ingresado");
+        topSucursalesBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                topSucursalesBtnActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Top 10  clientes  que mas han gastado");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        topProdBtn.setText("Top 10 productos mas vendidos");
+        topProdBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                topProdBtnActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Top de descuentos");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        topClientesBtn.setText("Top 10  clientes  que mas han gastado");
+        topClientesBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                topClientesBtnActionPerformed(evt);
+            }
+        });
+
+        topDescuentos.setText("Top de descuentos");
+        topDescuentos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                topDescuentosActionPerformed(evt);
             }
         });
 
@@ -77,11 +94,11 @@ public class ReportesFrame extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(132, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(topClientesBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(topProdBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(topSucursalesBtn)
+                    .addComponent(topVentasBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(topDescuentos, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(114, 114, 114))
         );
         layout.setVerticalGroup(
@@ -90,42 +107,146 @@ public class ReportesFrame extends javax.swing.JPanel {
                 .addGap(53, 53, 53)
                 .addComponent(jLabel1)
                 .addGap(37, 37, 37)
-                .addComponent(jButton5)
+                .addComponent(topDescuentos)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(topVentasBtn)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(topSucursalesBtn)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(topProdBtn)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4)
+                .addComponent(topClientesBtn)
                 .addContainerGap(71, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void topVentasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topVentasBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+            ArrayList<Venta> topVentas= new ArrayList<>();
+            
+            topVentas=vd.listarTopventas();
+            modeloVenta(topVentas);
+           
+    }//GEN-LAST:event_topVentasBtnActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void topProdBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topProdBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        ArrayList<Producto> topProductos= new ArrayList<>();
+        ProductoDatos pd= new ProductoDatos();
+        topProductos=pd.listarTopProductosVendidos();
+        modeloProducto(topProductos);
+        
+    }//GEN-LAST:event_topProdBtnActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void topClientesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topClientesBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+        ArrayList<Cliente> topClientes= new ArrayList<>();
+        ClienteDatos cd= new ClienteDatos();
+        topClientes= cd.listarTopClientes();
+        modeloCliente(topClientes);
+    }//GEN-LAST:event_topClientesBtnActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void topDescuentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topDescuentosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_topDescuentosActionPerformed
 
+    private void topSucursalesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_topSucursalesBtnActionPerformed
+        // TODO add your handling code here:
+        ArrayList<Sucursal> topSucursales= new ArrayList<>();
+        topSucursales=vd.listarTopSucursales();
+        modeloSucursal(topSucursales);
+        
+    }//GEN-LAST:event_topSucursalesBtnActionPerformed
+    public DefaultTableModel modeloVenta(ArrayList<Venta> topVentas){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Id Venta");
+        modelo.addColumn("Fecha");
+        modelo.addColumn("Total de la venta");
+
+        for (Venta venta : topVentas) {
+            String[] data = new String[6];
+            data[0] = String.valueOf(venta.getId_venta());
+            data[1] = String.valueOf(venta.getFecha());
+            data[2] = String.valueOf(venta.getTotal_con_descuento());
+            modelo.addRow(data);
+        }
+        ReporteIndividualFrame r= new ReporteIndividualFrame(modelo, "Top 10 ventas más grandes");
+        r.setVisible(true);
+        return modelo;
+        //tablaEstanterias.setModel(modelo);
+    
+    }
+    
+    public DefaultTableModel modeloSucursal(ArrayList<Sucursal> topSucursal){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Nombre Sucursal");
+        modelo.addColumn("Dinero Obtenido");
+        //modelo.addColumn("Total de la venta");
+
+        for (Sucursal venta : topSucursal) {
+            String[] data = new String[6];
+            data[0] = String.valueOf(venta.getNombre());
+            data[1] = String.valueOf(venta.getDineroObtenido());
+            System.out.println("name "+venta.getNombre()+venta.getDineroObtenido());
+            //data[2] = String.valueOf(venta.getTotal_con_descuento());
+            modelo.addRow(data);
+        }
+        ReporteIndividualFrame r= new ReporteIndividualFrame(modelo,"Top 3 sucursales que más dinero han ingresado.");
+        r.setVisible(true);
+        return modelo;
+        //tablaEstanterias.setModel(modelo);
+    
+    }
+    
+    public DefaultTableModel modeloProducto(ArrayList<Producto> topProducto){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Nombre producto");
+        modelo.addColumn("Cantidad de veces vendido");
+        //modelo.addColumn("Total de la venta");
+
+        for (Producto producto : topProducto) {
+            String[] data = new String[6];
+            System.out.println("Producto "+producto.getNombre()+producto.getCantidad());
+            data[0] = String.valueOf(producto.getNombre());
+            data[1] = String.valueOf(producto.getCantidad());
+            //data[2] = String.valueOf(venta.getTotal_con_descuento());
+            modelo.addRow(data);
+        }
+        ReporteIndividualFrame r= new ReporteIndividualFrame(modelo, "Top 10 artículos más vendidos.");
+        r.setVisible(true);
+        return modelo;
+        
+        //tablaEstanterias.setModel(modelo);
+    
+    }
+    
+    public DefaultTableModel modeloCliente(ArrayList<Cliente> topCliente){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Nombre producto");
+        modelo.addColumn("Cantidad de veces vendido");
+        //modelo.addColumn("Total de la venta");
+
+        for (Cliente cliente : topCliente) {
+            String[] data = new String[6];
+            data[0] = String.valueOf(cliente.getNit());
+            data[1] = String.valueOf(cliente.getNombre());
+            data[1] = String.valueOf(cliente.getDinero_gastado());
+            modelo.addRow(data);
+        }
+        ReporteIndividualFrame r= new ReporteIndividualFrame(modelo, "Top 10 clientes que más dinero han gastado");
+        r.setVisible(true);
+        return modelo;
+        
+        //tablaEstanterias.setModel(modelo);
+    
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton topClientesBtn;
+    private javax.swing.JButton topDescuentos;
+    private javax.swing.JButton topProdBtn;
+    private javax.swing.JButton topSucursalesBtn;
+    private javax.swing.JButton topVentasBtn;
     // End of variables declaration//GEN-END:variables
 }

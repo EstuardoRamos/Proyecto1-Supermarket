@@ -35,10 +35,24 @@ public class RegistrarEmpleado extends javax.swing.JPanel {
         nuevo.setPassword(password.getText());
         nuevo.setUser(usuario.getText());
         nuevo.setTipo((String) rolOpc.getSelectedItem());
-        nuevo.setSucursal(1);
+        nuevo.setSucursal(obtenerSucursal());
         ed.insertarEmpleado(nuevo);
         
         
+    }
+    public int obtenerSucursal(){
+        int sucursalId = 0;
+        if (sucursalOpc.getSelectedItem()=="Central") {
+            sucursalId=1;
+        }
+        if (sucursalOpc.getSelectedItem()=="Norte") {
+            sucursalId=2;
+        }
+        if (sucursalOpc.getSelectedItem()=="Sur") {
+            sucursalId=3;
+        }
+        
+        return sucursalId;
     }
 
     /**
@@ -62,6 +76,8 @@ public class RegistrarEmpleado extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         rolOpc = new javax.swing.JComboBox<>();
         registrarBtn = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        sucursalOpc = new javax.swing.JComboBox<>();
 
         jRadioButtonMenuItem1.setSelected(true);
         jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
@@ -78,7 +94,7 @@ public class RegistrarEmpleado extends javax.swing.JPanel {
 
         jLabel5.setText("Tipo:");
 
-        rolOpc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        rolOpc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Caja", "Inventario", "Bodega", "Administrador" }));
         rolOpc.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 rolOpcItemStateChanged(evt);
@@ -97,6 +113,10 @@ public class RegistrarEmpleado extends javax.swing.JPanel {
             }
         });
 
+        jLabel6.setText("Sucursal");
+
+        sucursalOpc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Central", "Norte", "Sur" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -110,7 +130,8 @@ public class RegistrarEmpleado extends javax.swing.JPanel {
                             .addComponent(jLabel2)
                             .addComponent(jLabel4)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel5))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
                         .addGap(58, 58, 58)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(registrarBtn)
@@ -118,7 +139,8 @@ public class RegistrarEmpleado extends javax.swing.JPanel {
                                 .addComponent(usuario)
                                 .addComponent(nombre)
                                 .addComponent(password, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
-                                .addComponent(rolOpc, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(rolOpc, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(sucursalOpc, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(109, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -138,13 +160,17 @@ public class RegistrarEmpleado extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(rolOpc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(sucursalOpc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(registrarBtn)
-                .addGap(39, 39, 39))
+                .addGap(28, 28, 28))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -154,6 +180,7 @@ public class RegistrarEmpleado extends javax.swing.JPanel {
 
     private void registrarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarBtnActionPerformed
         // TODO add your handling code here:
+        insertarUsuario();
     }//GEN-LAST:event_registrarBtnActionPerformed
 
     private void rolOpcItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rolOpcItemStateChanged
@@ -167,12 +194,14 @@ public class RegistrarEmpleado extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JTextField nombre;
     private javax.swing.JTextField password;
     private javax.swing.JButton registrarBtn;
     private javax.swing.JComboBox<String> rolOpc;
+    private javax.swing.JComboBox<String> sucursalOpc;
     private javax.swing.JTextField usuario;
     // End of variables declaration//GEN-END:variables
 }

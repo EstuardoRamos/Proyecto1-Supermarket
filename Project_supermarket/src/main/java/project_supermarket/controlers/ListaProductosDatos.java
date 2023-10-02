@@ -28,11 +28,7 @@ public class ListaProductosDatos {
             pr.setString(1, producto.getId_venta());
             pr.setString(2, producto.getId_producto());
             pr.setInt(3, producto.getCantidad());
-            //pr.setDouble(4, producto.getPrecio());
-            //pr.setInt(5, producto.getCantidad());
-           // pr.setInt(6, producto.getId_tienda());
             pr.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Producto registrado correctamente");
         } catch (SQLException e) {
             resultado = false;
             JOptionPane.showMessageDialog(null, "Error al ingresar producto: " + e.getMessage());
